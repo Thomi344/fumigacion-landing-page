@@ -3,7 +3,7 @@
 // ============ Layaout general  ============
 // ==========================================
 import { zonas } from '../data/data.js';
-
+import WhatsappFlotante from '../components/WhatsappFlotante.astro';
 interface Props {
 	title?: string;
 	description?: string;
@@ -133,6 +133,8 @@ const localBusinessSchema = {
 		<main>
 			<slot />
 		</main>
+
+		<WhatsappFlotante/>
 	</body>
 </html>
 
