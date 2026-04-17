@@ -1,0 +1,99 @@
+---
+// =================================================
+// ============ Secction de "Servicios" ============
+// =================================================
+import { Image } from 'astro:assets';
+
+import imgMosquito from '../assets/servicios/cucaracha.webp';
+import imgRata from '../assets/servicios/rata.webp';
+import imgPaloma from '../assets/servicios/paloma.webp';
+import imgVirus from '../assets/servicios/virus.webp';
+
+const servicios = [
+  {
+    titulo: "Desinsectación",
+    descripcion: "Eliminamos cucarachas, hormigas, arañas, chinches y mosquitos. Control preventivo contra el Dengue con productos de baja toxicidad.",
+    // <-------- Solo insectos clave para SEO -------->
+    items: ["Cucarachas", "Hormigas", "Chinches y Pulgas", "Mosquitos (Dengue)"],
+    imagen: imgMosquito,
+    alt: "Fumigación de cucarachas e insectos"
+  },
+  {
+    titulo: "Control de Roedores",
+    descripcion: "Especialistas en desratización urbana y comercial. Utilizamos cebos de seguridad inofensivos para humanos y mascotas.",
+    // <-------- Tipos de roedores -------->
+    items: ["Ratas", "Ratones", "Lauchas", "Roedores en general"],
+    imagen: imgRata,
+    alt: "Control y eliminación de roedores"
+  },
+  {
+    titulo: "Control de Aves",
+    descripcion: "Ahuyentamiento profesional de palomas y murciélagos. Instalación de redes invisibles y pinchos anti-posado sin daño animal.",
+    // <-------- Aves plaga y murciélagos -------->
+    items: ["Palomas", "Murciélagos", "Cotorras", "Gorriones"],
+    imagen: imgPaloma,
+    alt: "Ahuyentamiento de palomas y aves"
+  },
+  {
+    titulo: "Sanitización Ambiental",
+    descripcion: "Desinfección profunda contra virus, bacterias y hongos. Certificados oficiales para comercios, oficinas y consorcios.",
+    // <-------- Microorganismos -------->
+    items: ["Virus (COVID-19)", "Bacterias", "Hongos", "Ácaros"],
+    imagen: imgVirus,
+    alt: "Sanitización contra virus y bacterias"
+  }
+];
+---
+
+<section id="servicios" class="w-full py-20 px-6 lg:px-12 bg-white scroll-mt-24">
+  <div class="max-w-7xl mx-auto">
+    
+    <div class="mb-14 text-center md:text-left">
+      <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
+        Servicios de <span class="text-[var(--color-marca)]">Control de Plagas</span>
+      </h2>
+      <p class="mt-4 text-slate-600 text-lg md:text-xl max-w-2xl text-pretty">
+        Soluciones profesionales y definitivas para todo tipo de plagas. Utilizamos tecnología de punta y métodos seguros para tu familia y clientes.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {servicios.map((s) => (
+        <div itemscope itemtype="https://schema.org/Service" class="group bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl hover:border-[var(--color-marca)]/50 transition-all duration-300 flex flex-col h-full transform hover:-translate-y-1">
+          
+          <div class="mb-6 flex w-full justify-center">
+            <div class="w-44 h-44 group-hover:scale-110 transition-transform duration-300 drop-shadow-md">
+              <Image 
+                src={s.imagen} 
+                alt={s.alt}
+                width={300}
+                height={300}
+                class="w-full h-full object-contain"
+              />
+            </div>
+          </div>
+          
+          <h3 itemprop="name" class="text-2xl font-bold text-slate-900 mb-4 text-center group-hover:text-[var(--color-marca)] transition-colors">
+            {s.titulo}
+          </h3>
+          
+          <p itemprop="description" class="text-slate-600 mb-8 flex-grow leading-relaxed text-center">
+            {s.descripcion}
+          </p>
+
+          <ul class="space-y-3 border-t border-slate-100 pt-6">
+            {s.items.map((item) => (
+              <li class="flex items-center gap-3 text-sm font-medium text-slate-700">
+                <svg aria-hidden="true" class="w-5 h-5 text-[var(--color-marca)] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>

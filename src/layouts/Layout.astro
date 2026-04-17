@@ -1,0 +1,172 @@
+---
+// ==========================================
+// ============ Layaout general  ============
+// ==========================================
+import { zonas } from '../data/data.js';
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+// <-------- Desestructuramos con valores por defecto altamente optimizados para CTR e-------->
+const { 
+	title = "Fumigación Buenos Aires | Control de Plagas en GBA y CABA",
+	description = "Expertos en fumigación y control de plagas para hogares y comercios. Eliminación definitiva de cucarachas, roedores e insectos. Servicio rápido, seguro y con garantía."
+} = Astro.props;
+
+// <-------- Variables de entorno -------->
+const gtmId = import.meta.env.PUBLIC_GTM_ID;
+const siteUrl = import.meta.env.PUBLIC_SITE_URL;
+const phone = import.meta.env.PUBLIC_PHONE;
+const companyName = import.meta.env.PUBLIC_COMPANY_NAME || "Fumigación Buenos Aires";
+const ogImage = import.meta.env.PUBLIC_OG_IMAGE || "/public/og-image.webp";
+// <-------- Aplanamos el array de zonas para obtener todos los barrios para el SEO Local -------->
+const todosLosBarrios = zonas.flatMap(zona => zona.barrios);
+
+// <--------  Generación de Schema.org para SEO Local (PestControlService) -------->
+const localBusinessSchema = {
+	"@context": "https://schema.org",
+	"@type": "PestControlService",
+	"name": companyName,
+	"url": siteUrl,
+	"telephone": phone,
+	"image": `${siteUrl}/images/logo.webp`,
+	"description": description,
+	"address": {
+		"@type": "PostalAddress",
+		"addressLocality": "Buenos Aires",
+		"addressRegion": "CABA y GBA",
+		"addressCountry": "AR"
+	},
+	"areaServed": todosLosBarrios,
+	"priceRange": "$$"
+};
+---
+
+<!doctype html>
+<html lang="es-AR" class="scroll-smooth">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        
+        <title>{title === "Fumigación Buenos Aires | Control de Plagas en GBA y CABA | ¡Cotizá ahora!" ? title : `${title} | ${companyName}`}</title>
+        
+        <meta name="description" content={description} />
+        <link rel="canonical" href={siteUrl} />
+        
+        <meta name="generator" content={Astro.generator} />
+
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="manifest" href="/site.webmanifest">
+		
+			
+        <meta name="theme-color" content="#ffffff" />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={siteUrl} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+        
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
+
+
+		<script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
+
+		<script is:inline define:vars={{ gtmId }}>
+			(function() {
+				if (!gtmId || gtmId === 'GTM-XXXXXXX') return;
+
+				const initGTM = () => {
+					if (window._gtmLoaded) return;
+					window._gtmLoaded = true;
+
+					// <-------- Detección estricta de Bots y Lighthouse -------->
+					const isBot = /bot|googlebot|crawler|spider|robot|crawling|lighthouse/i.test(navigator.userAgent) || navigator.webdriver;
+					if (isBot) return;
+
+					// <-------- Creamos el script de GTM asignándole el tipo de Partytown -------->
+					const ptScript = document.createElement('script');
+					ptScript.type = 'text/partytown';
+					ptScript.innerHTML = `
+						(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+						new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+						j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+						'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+						})(window,document,'script','dataLayer','${gtmId}');
+					`;
+					
+					// <-------- Lo inyectamos en el head -------->
+					document.head.appendChild(ptScript);
+
+					// <-------- Disparamos 'ptupdate' para que Partytown procese el nuevo script inyectado -------->
+					window.dispatchEvent(new CustomEvent('ptupdate'));
+
+					// <-------- Limpiamos los listeners para no consumir memoria -------->
+					['mousemove', 'touchstart', 'scroll', 'keydown', 'click'].forEach(evt => {
+						window.removeEventListener(evt, initGTM, { passive: true });
+					});
+				};
+
+				// <-------- Escuchamos movimientos reales -------->
+				['mousemove', 'touchstart', 'scroll', 'keydown', 'click'].forEach(evt => {
+					window.addEventListener(evt, initGTM, { once: true, passive: true });
+				});
+			})();
+		</script>
+	</head>
+	<body class="bg-[var(--color-fondo-base)] text-[var(--color-texto-principal)] antialiased selection:bg-[var(--color-marca)] selection:text-white">
+		{/* --- GOOGLE TAG MANAGER (noscript) --- */}
+		{gtmId && (
+					<noscript>
+						<iframe src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+						height="0" width="0" style="display:none;visibility:hidden"></iframe>
+					</noscript>
+		)}		
+		
+		<main>
+			<slot />
+		</main>
+	</body>
+</html>
+
+<style is:global>
+	/* <-------- Optimizamos la carga de Tailwind --------> */
+	@import 'tailwindcss';
+
+	html,
+	body {
+		margin: 0;
+		width: 100%;
+		min-height: 100vh;
+		/* <-------- Suavizamos el renderizado de fuentes para mejorar el Speed Index -------->*/
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		text-rendering: optimizeLegibility;
+		scroll-behavior: smooth;
+	}
+
+	@theme {
+		/* <-------- Colores extraídos y adaptados del logo para un diseño limpio y blanco -------->*/
+		--color-marca: #0eb540;         /* <-------- Verde vivo, intenso  -------->*/
+        --color-marca-hover: #0a8a30;   /* <-------- Oscurece un poco al pasar el mouse -------->*/
+        --color-marca-suave: #e6f7ec;   /* <-------- Para fondos muy tenues */	
+		
+		--color-wpp: #25D366;           /* <-------- Verde oficial de WhatsApp -------->*/
+		--color-wpp-hover: #128C7E;     
+		
+		--color-fondo-base: #ffffff;    /* <-------- Página blanca  -------->*/
+		--color-fondo-nav: #ffffff;  	/* <-------- Navegación blanca */
+		--color-fondo-card: #fafafa;    /* <-------- Un gris/blanco apenas distinto para diferenciar tarjetas -------->*/
+		
+		--color-borde: #e5e7eb;         /* <-------- Gris claro para divisores sutiles */
+		--color-texto-principal: #111827; /* <-------- Negro/Gris muy oscuro para legibilidad (como el texto del logo) -------->*/
+		--color-texto-secundario: #4b5563; /* <-------- Gris medio para descripciones -------->*/
+	}
+</style>

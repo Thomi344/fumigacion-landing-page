@@ -1,0 +1,157 @@
+---
+// ============================================================
+// ============ Secction de "Preguntas Frecuentes" ============
+// ============================================================
+import { zonas } from '../data/data.js';
+
+interface Props {
+  zonaSlug?: string | any;
+}
+
+const { zonaSlug } = Astro.props;
+const phone = import.meta.env.PUBLIC_PHONE?.replace('+', '') || '541100000000';
+
+const zonaData = typeof zonaSlug === 'object' 
+  ? zonaSlug 
+  : zonas.find((z) => z.slug === zonaSlug);
+
+const nombreZona = zonaData ? zonaData.nombre : 'Buenos Aires';
+const regionZona = zonaData ? zonaData.region : 'CABA y GBA';
+const barriosSEO = zonaData ? zonaData.barrios.slice(0, 5).join(', ') : 'todos los barrios';
+
+const faqs = [
+  {
+    categoria: "Cobertura y Disponibilidad",
+    items: [
+      {
+        q: `¿En qué zonas prestan servicio de control de plagas?`,
+        a: `Brindamos cobertura completa en la ${regionZona}, con especial atención en ${nombreZona} y barrios como ${barriosSEO}. Contamos con unidades móviles distribuidas estratégicamente para garantizar una fumigación rápida y efectiva.`
+      },
+      {
+        q: "¿Atienden urgencias los fines de semana o feriados?",
+        a: "Sí, realizamos fumigación de urgencia con disponibilidad de lunes a domingos. Atendemos tanto a consorcios y administraciones como a particulares, garantizando respuesta inmediata en el día."
+      }
+    ]
+  },
+  {
+    categoria: "Seguridad y Salud",
+    items: [
+      {
+        q: "¿Tengo que abandonar mi casa durante la fumigación?",
+        a: "Para la aplicación de geles y microcápsulas sin olores fuertes no es necesario retirarse. En casos de pulverización, solo requerimos que la propiedad esté desocupada por 2 horas. Son tratamientos no invasivos que respetan tu rutina diaria."
+      },
+      {
+        q: "¿Los productos son seguros para perros, gatos y niños?",
+        a: "Utilizamos exclusivamente productos domisanitarios de baja toxicidad y formulaciones pet-friendly aprobadas por el Ministerio de Salud. Es un servicio totalmente seguro para niños, mascotas y plantas."
+      }
+    ]
+  },
+  {
+    categoria: "Control de Plagas Específicas",
+    items: [
+      {
+        q: "¿Cómo eliminan las cucarachas chiquitas de la cocina?",
+        a: "La cucaracha alemana o germana anida en motores y grietas. La combatimos con cebo en gel de alta atracción que erradica la colonia de forma definitiva sin necesidad de vaciar tus muebles."
+      },
+      {
+        q: "¿Hacen desratización y prevención de roedores?",
+        a: "Implementamos planes de desratización con cebos de seguridad y estaciones de monitoreo para ratas y ratones, sumado a tareas de exclusión para sellar accesos."
+      },
+      {
+        q: "¿El servicio sirve para prevenir el Dengue?",
+        a: "Realizamos fumigación contra mosquitos mediante pulverización en jardines y espacios abiertos para la prevención de Dengue, Zika y Chikungunya."
+      }
+    ]
+  },
+  {
+    categoria: "Comercios y Consorcios",
+    items: [
+      {
+        q: "¿Emiten certificado de fumigación para locales?",
+        a: "Emitimos el certificado oficial de fumigación válido para habilitación municipal en comercios, locales gastronómicos e industrias, completando el libro de actas reglamentario."
+      },
+      {
+        q: "¿Ofrecen abonos de mantenimiento para edificios?",
+        a: "Colaboramos con administraciones de consorcios realizando control de plagas mensual, limpieza de tanques de agua y mantenimiento preventivo en áreas comunes y cocheras."
+      }
+    ]
+  },
+  {
+    categoria: "Garantía y Presupuesto",
+    items: [
+      {
+        q: "¿El tratamiento tiene garantía?",
+        a: "Sí, entregamos garantía escrita en cada servicio. Realizamos monitoreo post-servicio y, si la plaga persiste, realizamos una re-aplicación"
+      },
+      {
+        q: "¿Cómo pido un presupuesto y cuánto demoran?",
+        a: `Podés solicitar tu presupuesto sin cargo por WhatsApp al ${phone}. Ofrecemos precios transparentes y realizamos inspecciones a domicilio de ser necesario.`
+      }
+    ]
+  }
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.flatMap(cat => cat.items.map(item => ({
+    "@type": "Question",
+    "name": item.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.a
+    }
+  })))
+};
+---
+
+{/* <--------  1. Fondo súper clarito (bg-slate-50) para generar contraste --------> */}
+<section id="faq" class="py-20 px-6 lg:px-12 bg-slate-50 border-t border-slate-200 scroll-mt-24" id="preguntas">
+  <div class="max-w-4xl mx-auto">
+    
+    <div class="mb-14 text-center md:text-left">
+      <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
+        {/* <--------  2. Ajuste del verde: Usamos un verde más oscuro/legible para el texto si tenés la variable, o un fallback de Tailwind --------> */}
+        Preguntas <span class="text-green-600 dark:text-[var(--color-marca)]">Frecuentes</span>
+      </h2>
+      <p class="mt-4 text-slate-600 text-lg md:text-xl">
+        Todo lo que necesitás saber sobre el control de plagas en {nombreZona}.
+      </p>
+    </div>
+
+    <div class="space-y-14">
+      {faqs.map((categoria) => (
+        <div>
+          {/* <--------  3. Títulos de categorías con más fuerza visual (text-slate-500 en lugar de 400) --------> */}
+          <h3 class="text-sm uppercase tracking-[0.2em] font-bold text-slate-500 mb-6 px-2 md:px-4 border-l-4 border-green-500">
+            {categoria.categoria}
+          </h3>
+          
+          <div class="space-y-4">
+            {categoria.items.map((item) => (
+              <details class="group bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md hover:border-green-400/50 open:shadow-md open:border-green-500/50">
+                <summary class="flex items-center justify-between p-5 md:p-6 cursor-pointer list-none text-slate-800 hover:text-green-700 transition-colors">
+                  <h4 class="pr-4 leading-tight m-0 text-base md:text-lg font-bold">{item.q}</h4>
+                  <svg class="w-5 h-5 text-slate-400 group-open:text-green-500 group-open:rotate-180 transition-all duration-300 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                {/* <-------- Interior de la respuesta más claro para facilitar la lectura --------> */}
+                <div class="px-5 md:px-6 pb-6 text-slate-600 leading-relaxed text-pretty border-t border-slate-100 pt-5 bg-slate-50/50">
+                  {item.a}
+                </div>
+              </details>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+<style>
+  summary::-webkit-details-marker { display: none; }
+</style>

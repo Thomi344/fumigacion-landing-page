@@ -1,0 +1,63 @@
+---
+// =================================================
+// ============ Secction de "Trust Bar" ============
+// =================================================
+// <-------- Creamos un array con los beneficios para que el HTML quede súper limpio -------->
+const beneficios = [
+  {
+    titulo: "Pet & Eco Friendly",
+    texto: "Seguros para mascotas y niños.",
+    // <-------- Icono de un escudo con una huella / hoja -------->
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-marca)]"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M8 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path><path d="M16 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path><path d="M12 16a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"></path></svg>`
+  },
+  {
+    titulo: "Empresa Habilitada",
+    texto: "Certificados para comercios.",
+    // <-------- Icono de un certificado/documento con un check -------->
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-marca)]"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><polyline points="9 15 11 17 15 13"></polyline></svg>`
+  },
+  {
+    titulo: "Garantía Escrita",
+    texto: "Si la plaga vuelve, nosotros también.",
+    // <-------- Icono de un escudo con un candado / check de seguridad -------->
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-marca)]"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`
+  },
+  {
+    titulo: "Atención Inmediata",
+    texto: "Presupuesto sin cargo y turnos rápidos.",
+    // <-------- Icono de un rayo (velocidad) -------->
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-marca)]"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>`
+  }
+];
+---
+
+{/* <-------- Franja horizontal: bg-slate-900 para que haga un lindo contraste con el Hero oscuro, pero se note que es otra sección  -------->*/}
+<section class="w-full bg-slate-900 border-b border-slate-800 py-8 px-5 lg:px-12">
+  <div class="max-w-7xl mx-auto">
+    
+    {/* <-------- Grilla: 1 columna en móvil, 2 en tablet chica, 4 en PC  -------->*/}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 divide-y sm:divide-y-0 sm:divide-x divide-slate-800">
+      
+      {beneficios.map((item) => (
+        <div class="flex items-start gap-4 pt-4 sm:pt-0 sm:px-4 first:pt-0 first:px-0">
+          
+          {/*<--------  Contenedor del Icono SVG  -------->*/}
+          <div class="flex-shrink-0 mt-1 p-2 bg-slate-800 rounded-lg shadow-inner" set:html={item.svg} />
+          
+          {/* <-------- Textos  -------->*/}
+          <div>
+            <h3 class="text-white font-bold text-base md:text-lg tracking-wide mb-1">
+              {item.titulo}
+            </h3>
+            <p class="text-slate-400 text-sm leading-snug text-balance">
+              {item.texto}
+            </p>
+          </div>
+
+        </div>
+      ))}
+
+    </div>
+
+  </div>
+</section>

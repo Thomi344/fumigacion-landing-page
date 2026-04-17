@@ -1,0 +1,34 @@
+---
+// ===============================================
+// ============ Componente de Botones ============
+// ===============================================
+interface Props {
+  href: string;
+  variant?: 'primary' | 'whatsapp'| 'outline';
+  class?: string;
+  target?: string;
+  rel?: string;
+}
+
+const { 
+    href, 
+    variant = 'primary', 
+    class: className = '',
+    target,
+    rel
+} = Astro.props;
+
+// <-------- Clases base que comparten todos los botones -------->
+const baseStyles = "inline-flex items-center justify-center gap-2 font-bold py-4 px-10 text-lg uppercase tracking-wide rounded-full shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer";
+
+// <-------- Clases específicas según el variante -------->
+const variants = {
+    primary: "bg-[var(--color-marca)] hover:bg-[var(--color-marca-hover)] text-white",
+    whatsapp: "bg-[var(--color-wpp)] hover:bg-[var(--color-wpp-hover)] text-white",
+    outline: "bg-transparent border-2 border-[var(--color-marca)] text-white hover:bg-[var(--color-marca)]"
+};
+---
+
+<a href={href} target={target} rel={rel} class={`${baseStyles} ${variants[variant]} ${className}`}>
+    <slot /> 
+</a>

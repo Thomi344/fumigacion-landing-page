@@ -1,0 +1,50 @@
+---
+// src/pages/[zona].astro
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/NavBar.astro';
+import Hero from '../sections/Hero.astro';
+import TrustBar from '../sections/TrustBar.astro';
+import Servicios from '../sections/Servicios.astro';
+import ComoTrabajamos from '../sections/ComoTrabajamos.astro';
+import Faq from '../sections/Faq.astro';
+import Opiniones from '../sections/Opiniones.astro';
+import Footer from '../components/Footer.astro';
+// Aquí iremos sumando las secciones a medida que las armemos
+// import Hero from '../components/Hero.astro';
+
+// 1. IMPORTAMOS TUS DATOS NUEVOS
+import { zonas } from '../data/data.js';
+
+// 2. ESTO SE MANTIENE INTACTO: Es la magia de Astro para generar las URLs
+export function getStaticPaths() {
+    return zonas.map((zonaData) => {
+        return {
+            params: { zona: zonaData.slug },
+            props: { infoZona: zonaData },
+        };
+    });
+}
+
+// 3. RECIBIMOS LA INFORMACIÓN
+const { infoZona } = Astro.props;
+
+if (!infoZona) {
+    return Astro.redirect('/404');
+}
+---
+
+<Layout 
+    title={`Fumigación y Control de Plagas en ${infoZona.nombre} | ¡Cotizá Hoy!`} 
+    description={`Empresa de fumigación en ${infoZona.nombre} (${infoZona.region}). Eliminamos cucarachas, roedores e insectos. Servicio rápido en ${infoZona.barrios.slice(0, 3).join(', ')} y zonas cercanas.`}
+>
+    <Navbar />
+    <Hero zonaSlug={infoZona.slug} />
+    {/* <Hero nombreZona={infoZona.nombre} /> */}
+    <Servicios/>
+    <TrustBar/>
+    <ComoTrabajamos/>
+    <Opiniones />
+    <Faq zonaSlug={infoZona.slug}/>
+    <Footer />
+    
+</Layout>
