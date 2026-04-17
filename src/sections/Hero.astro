@@ -33,6 +33,9 @@ const msgWpp = `https://wa.me/${phone}?text=Hola%20${companyName.replace(/\s/g, 
   <Image 
     src="/images/Hero.webp" 
     alt={`Servicio de fumigación en ${nombreZona}`}
+    loading="eager"           
+    fetchpriority="high"      
+    decoding="async"
     width={1920}
     height={1080}
     loading="eager"
