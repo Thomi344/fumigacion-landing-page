@@ -1,0 +1,24 @@
+Options -MultiViews
+RewriteEngine On
+RewriteBase /
+
+# 1. Limpiador de doble barra (//)
+RewriteCond %{THE_REQUEST} \s[^?]*//
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L,NE]
+
+# 2. Forzar HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# 3. Forzar barra final en carpetas/subpáginas (salvo archivos .jpg, .css, .js, etc.)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !(.*)/$
+RewriteRule ^(.+)$ https://%{HTTP_HOST}/$1/ [L,R=301]
+
+# 4. Servir el index.html de las carpetas que genera Astro
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_FILENAME}/index.html -f
+RewriteRule ^(.*)$ $1/index.html [L]
+
+# Manejo de error 404
+ErrorDocument 404 /404.html

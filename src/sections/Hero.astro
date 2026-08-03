@@ -5,7 +5,7 @@
 import { Image } from 'astro:assets'; // <-------- 1. Importamos Image de Astro -------->
 import Button from '../components/Button.astro';
 import { zonas } from '../data/data.js';
-
+import imgHero from '../assets/servicios/Hero.webp';
 interface Props {
   zonaSlug?: string | any;
 }
@@ -31,7 +31,7 @@ const msgWpp = `https://wa.me/${phone}?text=Hola%20${companyName.replace(/\s/g, 
 <section id="hero" class="relative w-full min-h-[90vh] flex items-center px-5 pt-32 pb-20 md:pl-[50px] lg:pl-[120px] overflow-hidden bg-slate-950">
   
   <Image 
-    src="/images/Hero.webp" 
+    src={imgHero}
     alt={`Servicio de fumigación en ${nombreZona}`}
     loading="eager"           
     fetchpriority="high"      

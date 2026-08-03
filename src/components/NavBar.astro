@@ -6,6 +6,7 @@
 import { zonas } from '../data/data.js';
 import Button from './Button.astro'; //<-------- Importamos el nuevo botón -------->
 
+const siteUrl = import.meta.env.PUBLIC_SITE_URL || 'https://xn--fumigacines-buenosaires-djc.com.ar';
 const phone = import.meta.env.PUBLIC_PHONE || "+5491100000000";
 const cleanPhone = phone.replace(/\D/g, '');
 const wppMessage = encodeURIComponent("Hola, necesito fumigación de plagas. ¿Me podrían asesorar?");
@@ -26,7 +27,7 @@ if (zonaEncontrada) {
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex justify-between items-center">
     
     {/*<-------- Logo y Marca -------->*/}
-    <a href="/" class="flex items-center gap-3 group" aria-label="Inicio - Fumigación Buenos Aires">
+    <a href={siteUrl} class="flex items-center gap-3 group" aria-label="Inicio - Fumigación Buenos Aires">
       <div class="text-[var(--color-marca)] transition-transform duration-300 group-hover:scale-110">
         <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
