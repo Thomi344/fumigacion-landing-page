@@ -6,45 +6,81 @@ import Hero from '../sections/Hero.astro';
 import TrustBar from '../sections/TrustBar.astro';
 import Servicios from '../sections/Servicios.astro';
 import ComoTrabajamos from '../sections/ComoTrabajamos.astro';
-import Faq from '../sections/Faq.astro';
 import Opiniones from '../sections/Opiniones.astro';
+import Faq from '../sections/Faq.astro';
 import Footer from '../components/Footer.astro';
-// Aquí iremos sumando las secciones a medida que las armemos
-// import Hero from '../components/Hero.astro';
 
-// 1. IMPORTAMOS TUS DATOS NUEVOS
+// --- 1. Importamos la base de datos de zonas y barrios ---
 import { zonas } from '../data/data.js';
 
-// 2. ESTO SE MANTIENE INTACTO: Es la magia de Astro para generar las URLs
-export function getStaticPaths() {
-    return zonas.map((zonaData) => {
-        return {
-            params: { zona: zonaData.slug },
-            props: { infoZona: zonaData },
-        };
+// --- Función para crear URLs limpias e indexables ---
+export function limpiarParaUrl(texto: string) {
+    return String(texto).toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // --- Quita acentos ---
+        .replace(/[^a-z0-9]+/g, '-') // --- Cambia espacios por guiones ---
+        .replace(/(^-|-$)+/g, ''); // --- Quita guiones de los extremos ---
+}
+
+// --- 2. Lógica SEO: Generación de URLs para Municipios y Barrios ---
+export async function getStaticPaths() {
+    const paths: any[] = [];
+
+    zonas.forEach(zona => {
+        // --- Agregamos la zona principal  ---
+        const slugZona = limpiarParaUrl(zona.nombre);
+        paths.push({
+            params: { zona: `fumigacion-zona-${slugZona}` },
+            props: {
+                nombreZona: zona.nombre,
+                region: zona.region,
+                barrios: zona.barrios
+            }
+        });
+
+        // --- Agregamos cada barrio individual apuntando a su propia URL ---
+        if (zona.barrios && zona.barrios.length > 0) {
+            zona.barrios.forEach(barrio => {
+                const slugBarrio = limpiarParaUrl(barrio);
+                if (slugBarrio !== slugZona) {
+                    paths.push({
+                        params: { zona: `fumigacion-zona-${slugBarrio}` },
+                        props: {
+                            nombreZona: barrio,
+                            region: zona.region,
+                            barrios: zona.barrios
+                        }
+                    });
+                }
+            });
+        }
     });
+
+    return paths;
 }
 
-// 3. RECIBIMOS LA INFORMACIÓN
-const { infoZona } = Astro.props;
+// --- 3. Recibimos la información inyectada por Astro ---
+const { nombreZona, region, barrios = [] } = Astro.props;
 
-if (!infoZona) {
-    return Astro.redirect('/404');
-}
+// --- Texto dinámico para meta descripción ---
+const textoBarriosMeta = barrios.length > 0 
+    ? `Atención en ${barrios.slice(0, 3).join(', ')} y zonas cercanas.` 
+    : `Cobertura integral en ${region}.`;
+
+const title = `Fumigación y Control de Plagas en ${nombreZona} | Certificado 24hs`;
+const description = `Servicio profesional de fumigación y desinfección en ${nombreZona} (${region}). ${textoBarriosMeta} Control de cucarachas, roedores y chinches.`;
 ---
 
-<Layout 
-    title={`Fumigación y Control de Plagas en ${infoZona.nombre} | ¡Cotizá Hoy!`} 
-    description={`Empresa de fumigación en ${infoZona.nombre} (${infoZona.region}). Eliminamos cucarachas, roedores e insectos. Servicio rápido en ${infoZona.barrios.slice(0, 3).join(', ')} y zonas cercanas.`}
->
-    <Navbar />
-    <Hero zonaSlug={infoZona.slug} />
-    {/* <Hero nombreZona={infoZona.nombre} /> */}
-    <Servicios/>
-    <TrustBar/>
-    <ComoTrabajamos/>
-    <Opiniones />
-    <Faq zonaSlug={infoZona.slug}/>
-    <Footer />
+<Layout title={title} description={description}>
+    <Navbar nombreZona={nombreZona} />
     
+    <main>
+        <Hero nombreZona={nombreZona} region={region} barrios={barrios} />
+        <TrustBar />
+        <Servicios nombreZona={nombreZona} region={region} />
+        <ComoTrabajamos nombreZona={nombreZona} region={region} />
+        <Opiniones nombreZona={nombreZona} region={region} />
+        <Faq nombreZona={nombreZona} region={region} />
+    </main>
+    
+    <Footer nombreZona={nombreZona} />
 </Layout>

@@ -2,47 +2,52 @@
 // ===================================================
 // ============ Secction "Como trabajamos" ============
 // ===================================================
+
+interface Props {
+  nombreZona?: string;
+  region?: string;
+}
+
+const { nombreZona = "tu zona", region = "" } = Astro.props;
+
+// <-------- Movemos el array acá abajo para poder inyectarle la variable nombreZona -------->
 const pasos = [
   {
     numero: "01",
     titulo: "Diagnóstico Rápido",
-    // <-------- Usamos el dato de "Presupuesto sin cargo" -------->
-    descripcion: "Escribinos por WhatsApp detallando tu problema. Te damos asesoramiento inmediato y un presupuesto sin cargo, sin vueltas ni sorpresas.",
+    descripcion: `Escribinos por WhatsApp detallando tu problema en ${nombreZona}. Te damos asesoramiento inmediato y un presupuesto sin cargo, sin vueltas ni sorpresas.`,
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-marca)]"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>`
   },
   {
     numero: "02",
     titulo: "Tratamiento Seguro",
-    // <-------- Atacamos el miedo al caos usando los datos del Excel (Pet Friendly, sin olor, 2 horas) -------->
     descripcion: "Aplicamos el método ideal (gel, aspersión o cebos). Usamos productos Pet-Friendly, casi inodoros. Solo necesitás dejar el lugar por 2 horas, sin vaciar tus muebles.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-marca)]"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>`
   },
   {
     numero: "03",
     titulo: "Garantía y Tranquilidad",
-    // <-------- Reforzamos la garantía por escrito -------->
     descripcion: "Te entregamos un certificado del trabajo realizado y nuestra Garantía por Escrito: si el problema persiste, nosotros volvemos sin costo adicional.",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--color-marca)]"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><polyline points="16 13 8 13"></polyline><polyline points="16 17 8 17"></polyline><polyline points="10 9 8 9"></polyline></svg>`
   }
 ];  
 ---
 
-{/* <-------- Usamos un fondo ligeramente distinto (slate-50) para separarlo de la sección blanca de Servicios --------> */}
 <section id="metodo" class="w-full py-20 px-6 lg:px-12 bg-slate-50 overflow-hidden">
   <div class="max-w-7xl mx-auto">
     
     <div class="mb-16 text-center max-w-3xl mx-auto">
       <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
-        Cómo Trabajamos
+        Cómo Trabajamos en <span class="text-[var(--color-marca)]">{nombreZona}</span>
       </h2>
       <p class="mt-4 text-slate-600 text-lg md:text-xl text-pretty">
-        Olvidate del caos, de vaciar la casa entera o de tener que irte a dormir a otro lado. Nuestro proceso está diseñado para <strong class="text-slate-900">solucionar tu problema en el día, con fricción cero.</strong>
+        Olvidate del caos, de vaciar la casa entera o de tener que irte a dormir a otro lado. Nuestro proceso está diseñado para <strong class="text-slate-900">solucionar tu problema en el día en {nombreZona}, con fricción cero.</strong>
       </p>
     </div>
 
     <div class="relative">
       
-      {/* <-------- Línea conectora de fondo (Solo visible en PC) --------> */}
+      {/* <-------- Línea conectora de fondo --------> */}
       <div class="hidden md:block absolute top-12 left-1/6 right-1/6 h-0.5 bg-slate-200" aria-hidden="true"></div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16 relative z-10">

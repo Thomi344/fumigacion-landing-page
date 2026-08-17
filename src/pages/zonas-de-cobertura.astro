@@ -1,0 +1,78 @@
+---
+// src/pages/zonas-de-cobertura.astro
+import Layout from '../layouts/Layout.astro';
+import NavBar from '../components/NavBar.astro'; 
+import Footer from '../components/Footer.astro'; 
+import WhatsappFlotante from '../components/WhatsappFlotante.astro';
+import { zonas } from '../data/data.js';
+
+// --- Función para crear URLs limpias e indexables ---
+const limpiarParaUrl = (texto: string) => {
+    return String(texto).toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '');
+};
+
+const title = "Directorio de Zonas de Fumigación | CABA y GBA";
+const description = "Directorio completo de todas las zonas y barrios donde prestamos servicio de fumigación y control de plagas con atención inmediata.";
+---
+
+<Layout title={title} description={description}>
+    <NavBar />
+    
+    {/* <-------- Fondo claro (slate-50) para que coincida con tu diseño limpio --------> */}
+    <main class="pt-32 pb-20 bg-slate-50 min-h-screen">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6">
+            
+            <header class="text-center mb-16">
+                <h1 class="text-4xl sm:text-5xl font-black text-slate-900 uppercase tracking-tighter mb-4">
+                    Directorio de <span class="text-[var(--color-marca)]">Cobertura</span>
+                </h1>
+                <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                    Seleccioná tu zona o barrio para ver los servicios de control de plagas y desinfección disponibles cerca tuyo.
+                </p>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {zonas.map((zona) => (
+                    <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-[var(--color-marca)]/50 transition-all duration-300">
+                        
+                        <h2 class="text-xl font-bold text-slate-900 uppercase border-b border-slate-100 pb-3 mb-4 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-[var(--color-marca)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            {/* <-------- Link a la zona principal (ej: /fumigacion-zona-lomas-de-zamora/) --------> */}
+                            <a href={`/fumigacion-zona-${limpiarParaUrl(zona.nombre)}/`} class="hover:text-[var(--color-marca-hover)] transition-colors">
+                                {zona.nombre}
+                            </a>
+                        </h2>
+
+                        <div class="space-y-4">
+                            <div>
+                                <h3 class="text-sm font-bold text-[var(--color-marca)] mb-3">FUMIGACIÓN EN:</h3>
+                                <ul class="space-y-2">
+                                    {zona.barrios.map(barrio => (
+                                        <li>
+                                            {/* <-------- Link a cada barrio individual (ej: /fumigacion-zona-banfield/) --------> */}
+                                            <a href={`/fumigacion-zona-${limpiarParaUrl(barrio)}/`} class="text-slate-600 text-sm hover:text-[var(--color-marca)] hover:underline transition-colors flex items-center gap-2 group">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-[var(--color-marca)] transition-colors"></span>
+                                                Fumigación en {barrio}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                ))}
+            </div>
+
+        </div>
+    </main>
+
+    <Footer />
+    <WhatsappFlotante />
+</Layout>

@@ -4,41 +4,43 @@
 // ============================================
 import { Image } from 'astro:assets'; // <-------- 1. Importamos Image de Astro -------->
 import Button from '../components/Button.astro';
-import { zonas } from '../data/data.js';
 import imgHero from '../assets/servicios/Hero.webp';
+
+// <-------- 2. Actualizamos la interface para recibir los datos directo de [zona].astro -------->
 interface Props {
-  zonaSlug?: string | any;
+  nombreZona?: string;
+  region?: string;
+  barrios?: string[];
 }
 
-const { zonaSlug } = Astro.props;
+const { 
+  nombreZona = 'Buenos Aires', 
+  region = 'CABA y GBA', 
+  barrios = [] 
+} = Astro.props;
 
 const phone = import.meta.env.PUBLIC_PHONE?.replace('+', '') || '541100000000';
 const companyName = import.meta.env.PUBLIC_COMPANY_NAME || 'Fumigaciones Alta Eficiencia';
 
-const zonaData = typeof zonaSlug === 'object' 
-  ? zonaSlug 
-  : zonas.find((z) => z.slug === zonaSlug);
-
-const nombreZona = zonaData ? zonaData.nombre : 'Buenos Aires';
-
-const seoBarrios = zonaData?.barrios 
-  ? ` Atendemos de forma inmediata en los barrios de ${zonaData.barrios.join(', ')} y alrededores.`
-  : ' Brindamos cobertura integral con atención inmediata en todas las zonas de CABA y GBA.';
+// <-------- 3. Armamos el texto SEO dinámico usando el array de barrios inyectado -------->
+const seoBarrios = barrios.length > 0 
+  ? ` Atendemos de forma inmediata en los barrios de ${barrios.slice(0, 5).join(', ')} y alrededores.`
+  : ` Brindamos cobertura integral con atención inmediata en toda la zona de ${region}.`;
 
 const msgWpp = `https://wa.me/${phone}?text=Hola%20${companyName.replace(/\s/g, '%20')},%20necesito%20un%20presupuesto%20para%20fumigaci%C3%B3n%20en%20${nombreZona}.`;
 ---
 
 <section id="hero" class="relative w-full min-h-[90vh] flex items-center px-5 pt-32 pb-20 md:pl-[50px] lg:pl-[120px] overflow-hidden bg-slate-950">
   
+  {/* <-------- 4. Imagen de fondo optimizada (dejé un solo loading="eager" para que no se duplique) --------> */}
   <Image 
     src={imgHero}
     alt={`Servicio de fumigación en ${nombreZona}`}
-    loading="eager"           
+    loading="eager"          
     fetchpriority="high"      
     decoding="async"
     width={1920}
     height={1080}
-    loading="eager"
     class="absolute inset-0 z-0 w-full h-full object-cover object-[80%_center] md:object-center transition-opacity duration-700"
   />
   
@@ -69,14 +71,14 @@ const msgWpp = `https://wa.me/${phone}?text=Hola%20${companyName.replace(/\s/g, 
     </div>
 
     <div class="flex flex-col sm:flex-row gap-4 mt-10 w-full sm:w-auto">
+      {/* <-------- 5. Corrección de comillas en los atributos de este botón --------> */}
       <Button 
         href={msgWpp} 
         target="_blank" 
         rel="noopener noreferrer" 
         variant="primary"
-        class="shadow-2xl shadow-[var(--color-marca)]/20
-        aria-label={`Solicitar presupuesto de fumigación en ${nombreZona} por WhatsApp`}"
-
+        class="shadow-2xl shadow-[var(--color-marca)]/20"
+        aria-label={`Solicitar presupuesto de fumigación en ${nombreZona} por WhatsApp`}
       >
         Pedir presupuesto ya
       </Button>
@@ -85,7 +87,6 @@ const msgWpp = `https://wa.me/${phone}?text=Hola%20${companyName.replace(/\s/g, 
         href="#servicios"
         rel="noopener noreferrer" 
         variant="outline"
-        
       >
         Ver Servicios
       </Button>

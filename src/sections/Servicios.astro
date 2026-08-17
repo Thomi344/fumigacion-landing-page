@@ -9,6 +9,15 @@ import imgRata from '../assets/servicios/rata.webp';
 import imgPaloma from '../assets/servicios/paloma.webp';
 import imgVirus from '../assets/servicios/virus.webp';
 
+// <-------- 1. Añadimos la interface y recibimos las props -------->
+interface Props {
+  nombreZona?: string;
+  region?: string;
+}
+
+const { nombreZona = "tu zona", region = "" } = Astro.props;
+
+// <-------- 2. Movemos el array acá abajo para inyectar la variable nombreZona en el SEO de las imágenes -------->
 const servicios = [
   {
     titulo: "Desinsectación",
@@ -16,7 +25,7 @@ const servicios = [
     // <-------- Solo insectos clave para SEO -------->
     items: ["Cucarachas", "Hormigas", "Chinches y Pulgas", "Mosquitos (Dengue)"],
     imagen: imgMosquito,
-    alt: "Fumigación de cucarachas e insectos"
+    alt: `Fumigación de cucarachas e insectos en ${nombreZona}`
   },
   {
     titulo: "Control de Roedores",
@@ -24,7 +33,7 @@ const servicios = [
     // <-------- Tipos de roedores -------->
     items: ["Ratas", "Ratones", "Lauchas", "Roedores en general"],
     imagen: imgRata,
-    alt: "Control y eliminación de roedores"
+    alt: `Control y eliminación de roedores en ${nombreZona}`
   },
   {
     titulo: "Control de Aves",
@@ -32,7 +41,7 @@ const servicios = [
     // <-------- Aves plaga y murciélagos -------->
     items: ["Palomas", "Murciélagos", "Cotorras", "Gorriones"],
     imagen: imgPaloma,
-    alt: "Ahuyentamiento de palomas y aves"
+    alt: `Ahuyentamiento de palomas y aves en ${nombreZona}`
   },
   {
     titulo: "Sanitización Ambiental",
@@ -40,7 +49,7 @@ const servicios = [
     // <-------- Microorganismos -------->
     items: ["Virus (COVID-19)", "Bacterias", "Hongos", "Ácaros"],
     imagen: imgVirus,
-    alt: "Sanitización contra virus y bacterias"
+    alt: `Sanitización contra virus y bacterias en ${nombreZona}`
   }
 ];
 ---
@@ -50,10 +59,11 @@ const servicios = [
     
     <div class="mb-14 text-center md:text-left">
       <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
-        Servicios de <span class="text-[var(--color-marca)]">Control de Plagas</span>
+        {/* <-------- 3. Título dinámico para anclar la geolocalización --------> */}
+        Servicios de Control de Plagas en <span class="text-[var(--color-marca)]">{nombreZona}</span>
       </h2>
       <p class="mt-4 text-slate-600 text-lg md:text-xl max-w-2xl text-pretty">
-        Soluciones profesionales y definitivas para todo tipo de plagas. Utilizamos tecnología de punta y métodos seguros para tu familia y clientes.
+        Soluciones profesionales y definitivas para todo tipo de plagas en {nombreZona} {region ? `y ${region}` : ''}. Utilizamos tecnología de punta y métodos seguros para tu familia y clientes.
       </p>
     </div>
 

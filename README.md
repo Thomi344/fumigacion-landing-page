@@ -1,46 +1,30 @@
-# Astro Starter Kit: Basics
+# 🪳 Fumigaciones Buenos Aires - Landing Page & Programmatic SEO
 
-```sh
-npm create astro@latest -- --template basics
-```
+**Sitio web oficial:** [https://xn--fumigacines-buenosaires-djc.com.ar/](https://xn--fumigacines-buenosaires-djc.com.ar/)
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Sitio web estático de ultra-alta velocidad desarrollado para un servicio profesional de control de plagas y desinfección en Buenos Aires (CABA y GBA). El proyecto está diseñado para maximizar la captación de leads a través de WhatsApp, priorizando un rendimiento impecable en dispositivos móviles y una estrategia agresiva de **SEO Local Programático**.
 
-## 🚀 Project Structure
+## 🚀 Arquitectura y Optimización SEO
 
-Inside of your Astro project, you'll see the following folders and files:
+### 1. Programmatic SEO (Generación Masiva de Rutas)
+El sitio utiliza el motor estático de Astro (`getStaticPaths`) para generar más de 100 landing pages dedicadas a cada municipio y barrio de cobertura. 
+* **Preservación de Slugs:** Se mantuvo la estructura indexada original (`/fumigacion-zona-[slug]/`) para no perder el posicionamiento histórico.
+* **Inyección Dinámica:** Las variables de ubicación (`nombreZona`, `region`) se inyectan automáticamente en los meta-títulos, descripciones, etiquetas `<h1>` y textos comerciales, logrando una relevancia local perfecta para Google.
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+### 2. Directorio de Cobertura e Interlinking
+Se implementó una página dedicada de **Directorio de Zonas** (`/zonas-de-cobertura/`) accesible desde el Footer. Esta arquitectura de enlaces internos (Interlinking) facilita que las arañas de Google rastreen e indexen todas las páginas de barrios rápidamente.
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+### 3. Rendimiento Extremo
+* **Framework:** Construido con [Astro.js](https://astro.build/) para generar HTML estático y eliminar el JavaScript innecesario en el cliente.
+* **Imágenes Optimizadas:** Uso de formatos WebP de próxima generación con políticas estrictas de `fetchpriority="high"` y `loading="eager"` para el Hero, asegurando un Largest Contentful Paint (LCP) instantáneo.
+* **Estilos:** Diseño creado con [Tailwind CSS](https://tailwindcss.com/), utilizando un sistema de variables personalizadas para mantener una paleta de colores limpia (Blanco, Slate y Verde Marca) que transmite higiene y profesionalismo.
 
-## 🧞 Commands
+### 4. Conversión Inteligente
+* Los botones de llamada a la acción (CTA) de WhatsApp leen la URL en la que está el usuario y pre-arman el mensaje con su ubicación exacta (ej. *"Hola, necesito fumigación de plagas en Las Lomitas"*), mejorando la tasa de respuesta y facilitando el presupuesto.
 
-All commands are run from the root of the project, from a terminal:
+## 🛠️ Stack Tecnológico
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+* **Astro.js** (SSG - Static Site Generation)
+* **Tailwind CSS** (Styling & Design System)
+* **TypeScript** (Tipado estricto para las propiedades dinámicas de SEO)
+* **Schema.org** (JSON-LD inyectado para FAQs y Servicios Locales)

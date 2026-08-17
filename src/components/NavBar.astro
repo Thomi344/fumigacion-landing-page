@@ -3,24 +3,21 @@
 // ============ NavBar ============
 // ================================
 
-import { zonas } from '../data/data.js';
-import Button from './Button.astro'; //<-------- Importamos el nuevo botón -------->
+import Button from './Button.astro'; 
+
+// <-------- 1. Recibimos la prop nombreZona directo del layout/página -------->
+interface Props {
+  nombreZona?: string;
+}
+
+const { nombreZona = "CABA y GBA" } = Astro.props;
 
 const siteUrl = import.meta.env.PUBLIC_SITE_URL || 'https://xn--fumigacines-buenosaires-djc.com.ar';
 const phone = import.meta.env.PUBLIC_PHONE || "+5491100000000";
 const cleanPhone = phone.replace(/\D/g, '');
-const wppMessage = encodeURIComponent("Hola, necesito fumigación de plagas. ¿Me podrían asesorar?");
+const wppMessage = encodeURIComponent(`Hola, necesito fumigación de plagas en ${nombreZona}. ¿Me podrían asesorar?`);
 const wppLink = `https://wa.me/${cleanPhone}?text=${wppMessage}`;
 
-// ---- LÓGICA DE UBICACIÓN DINÁMICA -------->
-const currentPath = Astro.url.pathname;
-let ubicacionActual = "CABA y GBA"; // <-------- Ubicación por defecto para la Home -------->
-
-// <-------- Buscamos si la URL actual contiene el slug de alguna de tus zonas -------->
-const zonaEncontrada = zonas.find(zona => currentPath.includes(zona.slug));
-if (zonaEncontrada) {
-  ubicacionActual = zonaEncontrada.nombre;
-}
 ---
 
 <header class="bg-[var(--color-fondo-nav)] border-b border-[var(--color-borde)] fixed w-full top-0 z-50 h-24 flex items-center shadow-sm">
@@ -44,7 +41,8 @@ if (zonaEncontrada) {
           <span class="text-[var(--color-marca)]">Buenos Aires</span>
         </div>
         <span class="text-sm md:text-base font-bold text-[var(--color-texto-secundario)] tracking-wide mt-1 group-hover:text-[var(--color-texto-principal)] transition-colors">
-            Servicio en <span class="text-[var(--color-marca)]">{ubicacionActual}</span>
+          {/* <-------- Inyectamos la variable limpia --------> */}
+            Servicio en <span class="text-[var(--color-marca)]">{nombreZona}</span>
         </span>
       </div>
     </a>
